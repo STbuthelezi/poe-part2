@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduHub - Student Dashboard</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #0f172a;
+      --success-color: #16a34a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); }
+
+    header { background-color: var(--card-bg); border-bottom: 1px solid #e2e8f0; }
+    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; }
+    .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; }
+    .nav-links a.active { color: var(--primary-color); }
+
+    main { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+    .panel { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    .panel h2 { margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+
+    /* Task Tracker Styles */
+    .task-form { display: flex; gap: 10px; margin-bottom: 1rem; }
+    .task-form input { flex: 1; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; }
+    .task-list { list-style: none; }
+    .task-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9; }
+    .task-item.completed { text-decoration: line-through; opacity: 0.6; }
+
+    /* Quiz Styles */
+    .quiz-question { margin-bottom: 1rem; font-weight: bold; }
+    .quiz-options label { display: block; margin-bottom: 0.5rem; cursor: pointer; }
+    .btn { padding: 0.5rem 1rem; background-color: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer; }
+    
+    #quizFeedback { margin-top: 1rem; font-weight: bold; color: var(--success-color); }
+
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">EduHub 🎓</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Resources</a></li>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="tutoring.html">Live Tutoring</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Assignment & Task Tracker -->
+    <section class="panel">
+      <h2>Assignment Tracker</h2>
+      <div class="task-form">
+        <input type="text" id="taskInput" placeholder="Add assignment or deadline..." aria-label="New assignment input">
+        <button class="btn" onclick="addTask()">Add Task</button>
+      </div>
+      <ul class="task-list" id="taskList">
+        <!-- Tasks will render here -->
+      </ul>
+    </section>
+
+    <!-- Self-Assessment Quiz -->
+    <section class="panel">
+      <h2>Quick Knowledge Check</h2>
+      <div id="quizContainer">
+        <p class="quiz-question">Which design principle emphasizes drawing attention to key visual elements?</p>
+        <div class="quiz-options">
+          <label><input type="radio" name="quiz" value="A"> A) Balance</label>
+          <label><input type="radio" name="quiz" value="B"> B) Emphasis</label>
+          <label><input type="radio" name="quiz" value="C"> C) Unity</label>
+        </div>
+        <button class="btn" onclick="submitQuiz()">Submit Answer</button>
+        <div id="quizFeedback"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Task Tracker JavaScript
+    const tasks = [
+      { id: 1, name: "Submit Chemistry Lab Report", done: false },
+      { id: 2, name: "Read CS Chapter 4", done: true }
+    ];
+
+    function renderTasks() {
+      const list = document.getElementById("taskList");
+      list.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.className = `task-item ${task.done ? 'completed' : ''}`;
+        li.innerHTML = `
+          <span>${task.name}</span>
+          <button onclick="toggleTask(${index})">${task.done ? 'Undo' : 'Complete'}</button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      if (input.value.trim() !== "") {
+        tasks.push({ name: input.value, done: false });
+        input.value = "";
+        renderTasks();
+      }
+    }
+
+    function toggleTask(index) {
+      tasks[index].done = !tasks[index].done;
+      renderTasks();
+    }
+
+    // Quiz Validation JavaScript
+    function submitQuiz() {
+      const selected = document.querySelector('input[name="quiz"]:checked');
+      const feedback = document.getElementById("quizFeedback");
+      
+      if (!selected) {
+        feedback.style.color = "red";
+        feedback.textContent = "Please select an answer!";
+        return;
+      }
+
+      if (selected.value === "B") {
+        feedback.style.color = "var(--success-color)";
+        feedback.textContent = "Correct! Emphasis draws user focus to key components.";
+      } else {
+        feedback.style.color = "red";
+        feedback.textContent = "Incorrect. Try again!";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", renderTasks);
+  </script>
+</body>
+</html>

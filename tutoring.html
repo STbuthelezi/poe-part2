@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduHub - Live Academic Help</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); }
+
+    header { background-color: var(--card-bg); border-bottom: 1px solid #e2e8f0; }
+    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; }
+    .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; }
+    .nav-links a.active { color: var(--primary-color); }
+
+    main { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+
+    .video-container { background-color: #000; height: 350px; border-radius: 8px; display: flex; justify-content: center; align-items: center; color: white; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+    .controls { display: flex; gap: 1rem; }
+
+    .btn { padding: 0.5rem 1rem; background-color: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .btn-danger { background-color: #dc2626; }
+
+    .tutor-card { background: var(--card-bg); padding: 1rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; border: 1px solid #e2e8f0; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">EduHub 🎓</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Resources</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="tutoring.html" class="active">Live Tutoring</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Video Conferencing Room</h2>
+    <div class="video-container" id="videoBox">
+      <p id="videoStatus">🎥 Camera and Audio Offline</p>
+      <div class="controls">
+        <button class="btn" onclick="toggleCall(true)">Join Virtual Room</button>
+        <button class="btn btn-danger" onclick="toggleCall(false)">Leave Session</button>
+      </div>
+    </div>
+
+    <h2>Available Online Tutors</h2>
+    <div class="tutor-card">
+      <div>
+        <h3>Dr. Sarah Smith</h3>
+        <p>Specialty: Physics & Mathematics</p>
+      </div>
+      <button class="btn" onclick="alert('Tutoring session requested with Dr. Smith!')">Book Session</button>
+    </div>
+  </main>
+
+  <script>
+    // Video Call Interaction Simulation
+    function toggleCall(join) {
+      const status = document.getElementById("videoStatus");
+      const videoBox = document.getElementById("videoBox");
+      if (join) {
+        status.textContent = "🟢 Live Call Connected: Tutor Assistant Active";
+        videoBox.style.backgroundColor = "#1e293b";
+      } else {
+        status.textContent = "🎥 Camera and Audio Offline";
+        videoBox.style.backgroundColor = "#000000";
+      }
+    }
+  </script>
+</body>
+</html>
